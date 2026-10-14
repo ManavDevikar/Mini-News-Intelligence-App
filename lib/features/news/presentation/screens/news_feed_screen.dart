@@ -61,20 +61,33 @@ class _NewsFeedScreenState extends ConsumerState<NewsFeedScreen> {
         return AlertDialog(
           title: const Text('Logout'),
           content: const Text('Are you sure you want to logout?'),
+          actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                const SizedBox(width: 12),
+                FilledButton(
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size(0, 44),
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                    foregroundColor: Theme.of(context).colorScheme.onError,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                  ),
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
 
-                _logout();
-              },
-              child: const Text('Logout'),
+                    _logout();
+                  },
+                  child: const Text('Logout'),
+                ),
+              ],
             ),
           ],
         );

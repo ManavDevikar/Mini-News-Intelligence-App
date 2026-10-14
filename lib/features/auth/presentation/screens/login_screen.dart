@@ -145,7 +145,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         const SizedBox(height: 28),
 
         Text(
-          'Welcome back',
+          'Hi, Welcome',
           style: Theme.of(context)
               .textTheme
               .headlineMedium
@@ -379,7 +379,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
           Center(
             child: Text(
-              'Demo authentication',
+              '',
               style: Theme.of(context)
                   .textTheme
                   .bodySmall
