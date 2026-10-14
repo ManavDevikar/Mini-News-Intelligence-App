@@ -4,6 +4,7 @@ import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/news/domain/entities/article.dart';
 import '../features/news/presentation/screens/article_detail_screen.dart';
 import '../features/news/presentation/screens/news_feed_screen.dart';
+import '../features/favorites/presentation/screens/favorites_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/login',
@@ -24,6 +25,13 @@ final appRouter = GoRouter(
         return const NewsFeedScreen();
       },
     ),
+
+    GoRoute(
+  path: '/favorites',
+  builder: (context, state) {
+    return const FavoritesScreen();
+  },
+),
 
     // Article Detail Screen
     GoRoute(

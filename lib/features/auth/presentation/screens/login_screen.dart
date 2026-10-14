@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import '../controllers/auth_controller.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -31,35 +32,43 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _login() async {
+    // Hide keyboard
     FocusScope.of(context).unfocus();
 
+    // Validate form
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
+    // Call authentication controller
     await ref.read(authControllerProvider.notifier).login(
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
 
+    // Make sure widget is still mounted
     if (!mounted) {
       return;
     }
 
+    // Get latest authentication state
     final authState = ref.read(authControllerProvider);
 
+    // Handle error
     if (authState.hasError) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             authState.error.toString(),
           ),
+          behavior: SnackBarBehavior.floating,
         ),
       );
 
       return;
     }
 
+    // Login successful
     if (authState.value == true) {
       context.go('/home');
     }
@@ -67,7 +76,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authControllerProvider);
+    final authState = ref.watch(
+      authControllerProvider,
+    );
 
     final isLoading = authState.isLoading;
 
@@ -86,7 +97,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
                   children: [
                     _buildHeader(),
 
@@ -107,7 +119,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Widget _buildHeader() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
       children: [
         Container(
           height: 64,
@@ -117,12 +130,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 .colorScheme
                 .primary
                 .withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(18),
+            borderRadius:
+                BorderRadius.circular(18),
           ),
           child: Icon(
             Icons.newspaper_rounded,
             size: 34,
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context)
+                .colorScheme
+                .primary,
           ),
         ),
 
@@ -134,7 +150,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               .textTheme
               .headlineMedium
               ?.copyWith(
-                fontWeight: FontWeight.w700,
+                fontWeight:
+                    FontWeight.w700,
               ),
         ),
 
@@ -161,17 +178,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius:
+            BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             blurRadius: 30,
             offset: const Offset(0, 10),
-            color: Colors.black.withValues(alpha: 0.06),
+            color: Colors.black
+                .withValues(alpha: 0.06),
           ),
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
         children: [
           Text(
             'Sign in',
@@ -179,7 +199,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 .textTheme
                 .titleLarge
                 ?.copyWith(
-                  fontWeight: FontWeight.w700,
+                  fontWeight:
+                      FontWeight.w700,
                 ),
           ),
 
@@ -191,7 +212,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 .textTheme
                 .bodyMedium
                 ?.copyWith(
-                  color: Colors.grey.shade600,
+                  color:
+                      Colors.grey.shade600,
                 ),
           ),
 
@@ -203,36 +225,46 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 .textTheme
                 .labelLarge
                 ?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight:
+                      FontWeight.w600,
                 ),
           ),
 
           const SizedBox(height: 8),
 
           TextFormField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            textInputAction: TextInputAction.next,
+            controller:
+                _emailController,
+            keyboardType:
+                TextInputType.emailAddress,
+            textInputAction:
+                TextInputAction.next,
+            enabled: !isLoading,
 
-            decoration: const InputDecoration(
-              hintText: 'Enter your email',
+            decoration:
+                const InputDecoration(
+              hintText:
+                  'Enter your email',
               prefixIcon: Icon(
                 Icons.email_outlined,
               ),
             ),
 
             validator: (value) {
-              final email = value?.trim() ?? '';
+              final email =
+                  value?.trim() ?? '';
 
               if (email.isEmpty) {
                 return 'Please enter your email';
               }
 
-              final emailRegex = RegExp(
+              final emailRegex =
+                  RegExp(
                 r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
               );
 
-              if (!emailRegex.hasMatch(email)) {
+              if (!emailRegex
+                  .hasMatch(email)) {
                 return 'Please enter a valid email';
               }
 
@@ -248,16 +280,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 .textTheme
                 .labelLarge
                 ?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight:
+                      FontWeight.w600,
                 ),
           ),
 
           const SizedBox(height: 8),
 
           TextFormField(
-            controller: _passwordController,
-            obscureText: _obscurePassword,
-            textInputAction: TextInputAction.done,
+            controller:
+                _passwordController,
+            obscureText:
+                _obscurePassword,
+            textInputAction:
+                TextInputAction.done,
+            enabled: !isLoading,
 
             onFieldSubmitted: (_) {
               if (!isLoading) {
@@ -265,28 +302,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               }
             },
 
-            decoration: InputDecoration(
-              hintText: 'Enter your password',
-              prefixIcon: const Icon(
-                Icons.lock_outline_rounded,
+            decoration:
+                InputDecoration(
+              hintText:
+                  'Enter your password',
+              prefixIcon:
+                  const Icon(
+                Icons
+                    .lock_outline_rounded,
               ),
-              suffixIcon: IconButton(
-                onPressed: () {
-                  setState(() {
-                    _obscurePassword =
-                        !_obscurePassword;
-                  });
-                },
+              suffixIcon:
+                  IconButton(
+                onPressed: isLoading
+                    ? null
+                    : () {
+                        setState(() {
+                          _obscurePassword =
+                              !_obscurePassword;
+                        });
+                      },
                 icon: Icon(
                   _obscurePassword
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
+                      ? Icons
+                          .visibility_outlined
+                      : Icons
+                          .visibility_off_outlined,
                 ),
               ),
             ),
 
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null ||
+                  value.isEmpty) {
                 return 'Please enter your password';
               }
 
@@ -304,20 +351,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             width: double.infinity,
             height: 52,
             child: ElevatedButton(
-              onPressed: isLoading ? null : _login,
+              onPressed:
+                  isLoading ? null : _login,
+
               child: isLoading
                   ? const SizedBox(
                       height: 22,
                       width: 22,
-                      child: CircularProgressIndicator(
+                      child:
+                          CircularProgressIndicator(
                         strokeWidth: 2.5,
                       ),
                     )
                   : const Text(
                       'Sign in',
-                      style: TextStyle(
+                      style:
+                          TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight:
+                            FontWeight.w600,
                       ),
                     ),
             ),
@@ -332,7 +384,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   .textTheme
                   .bodySmall
                   ?.copyWith(
-                    color: Colors.grey.shade500,
+                    color:
+                        Colors.grey.shade500,
                   ),
             ),
           ),

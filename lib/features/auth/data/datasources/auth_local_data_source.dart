@@ -1,25 +1,28 @@
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class AuthLocalDataSource {
-  AuthLocalDataSource(this._box);
+  AuthLocalDataSource();
 
-  final Box _box;
+  final Box _box = Hive.box('authBox');
 
-  static const String isLoggedInKey = 'is_logged_in';
-
-  Future<void> saveLoginState() async {
-    await _box.put(isLoggedInKey, true);
+  Future<void> saveLoginState(
+    bool isLoggedIn,
+  ) async {
+    await _box.put(
+      'isLoggedIn',
+      isLoggedIn,
+    );
   }
 
-  bool isLoggedIn() {
+  bool getLoginState() {
     return _box.get(
-          isLoggedInKey,
+          'isLoggedIn',
           defaultValue: false,
-        ) ==
-        true;
+        )
+        as bool;
   }
 
   Future<void> clearLoginState() async {
-    await _box.delete(isLoggedInKey);
+    await _box.delete('isLoggedIn');
   }
 }
