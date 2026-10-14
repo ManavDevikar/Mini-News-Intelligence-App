@@ -5,6 +5,7 @@ import '../features/news/domain/entities/article.dart';
 import '../features/news/presentation/screens/article_detail_screen.dart';
 import '../features/news/presentation/screens/news_feed_screen.dart';
 import '../features/favorites/presentation/screens/favorites_screen.dart';
+import '../features/search/presentation/screens/search_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/login',
@@ -30,6 +31,13 @@ final appRouter = GoRouter(
   path: '/favorites',
   builder: (context, state) {
     return const FavoritesScreen();
+  },
+),
+
+GoRoute(
+  path: '/search',
+  builder: (context, state) {
+    return const SearchScreen();
   },
 ),
 
