@@ -1,5 +1,5 @@
 # Mini-News-Intelligence-App
-
+Note: Application screenshots have been added to the screenshots folder.
 
 A clean and scalable Flutter application that provides a business news intelligence experience using a public News API.
 
