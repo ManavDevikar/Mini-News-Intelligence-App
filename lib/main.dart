@@ -15,6 +15,7 @@ Future<void> main() async {
   await Hive.initFlutter();
 
   await Hive.openBox('authBox');
+  await Hive.openBox('favoritesBox');
 
   runApp(
     const ProviderScope(
