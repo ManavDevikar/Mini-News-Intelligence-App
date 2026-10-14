@@ -8,15 +8,14 @@ import 'app/app.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load environment variables
   await dotenv.load(
     fileName: '.env',
   );
 
-  // Initialize Hive
   await Hive.initFlutter();
 
-  // Start application
+  await Hive.openBox('authBox');
+
   runApp(
     const ProviderScope(
       child: NewsIntelligenceApp(),
